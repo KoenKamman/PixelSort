@@ -1,44 +1,47 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 
 namespace PixelSort
 {
-	public partial class MainWindow : Window
+	public partial class MainWindow
 	{
+		private readonly BitmapProcessor _bitmapProcessor;
 		private WriteableBitmap _bitmap;
-		private Sort _sorter = new Sort();
-		private BitmapHelper helper = new BitmapHelper(50, 50);
 
 		public MainWindow()
 		{
 			InitializeComponent();
+			_bitmapProcessor = new BitmapProcessor();
 		}
 
-		private void BtnGenerate_Click(object sender, RoutedEventArgs e)
+		private void BtnLoad_Click(object sender, RoutedEventArgs e)
 		{
-			//var ofd = new OpenFileDialog
-			//{
-			//	Title = "Select a picture",
-			//	Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
-			//	         "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
-			//	         "Portable Network Graphic (*.png)|*.png"
-			//};
-			//if (ofd.ShowDialog() == true)
-			//{
-			//	_bitmap = new WriteableBitmap(new BitmapImage(new Uri(ofd.FileName)));
-			//}
-			_bitmap = helper.GenerateBitmap();
-			Image.Source = _bitmap;
+			var ofd = new OpenFileDialog
+			{
+				Title = "Open File",
+				Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+						 "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+						 "Portable Network Graphic (*.png)|*.png"
+			};
+			if (ofd.ShowDialog() == true)
+			{
+				_bitmap = new WriteableBitmap(new BitmapImage(new Uri(ofd.FileName)));
+				Image.Source = _bitmap;
+			}
 		}
 
 		private void BtnSort_Click(object sender, RoutedEventArgs e)
 		{
-			// var newBitmap = _sorter.BubbleSort(_bitmap, Image);
-			var newBitmap = _sorter.BubbleSort(_bitmap, Image);
-			Image.Source = newBitmap;
+			_bitmap = _bitmapProcessor.BubbleSortLuminance(_bitmap);
+			Image.Source = _bitmap;
+		}
+
+		private void BtnGenerate_Click(object sender, RoutedEventArgs e)
+		{
+			_bitmap = _bitmapProcessor.GenerateBitmap(100, 100);
+			Image.Source = _bitmap;
 		}
 	}
 }
