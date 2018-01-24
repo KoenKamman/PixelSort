@@ -1,0 +1,25 @@
+﻿<Window x:Class="PixelSort.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PixelSort"
+        mc:Ignorable="d"
+        RenderOptions.BitmapScalingMode="NearestNeighbor"
+        Title="PixelSort" Height="350" Width="525">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30*" />
+            <ColumnDefinition Width="350*" />
+            <ColumnDefinition Width="30*" />
+        </Grid.ColumnDefinitions>
+        <Image Margin="10,10,10,75" Name="Image" 
+               Stretch="Fill" Grid.Column="1" />
+        <Button Height="20" HorizontalAlignment="Left" 
+                Margin="10,0,0,40" Name="BtnLoad" VerticalAlignment="Bottom" 
+                Width="75" Grid.Column="1" Click="BtnGenerate_Click">_Generate</Button>
+        <Button Height="20" HorizontalAlignment="Right" 
+                Margin="10,0,0,40" Name="BtnSort" VerticalAlignment="Bottom" 
+                Width="75" Grid.Column="1" Click="BtnSort_Click">_Sort</Button>
+    </Grid>
+</Window>
