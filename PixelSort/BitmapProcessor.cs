@@ -60,31 +60,68 @@ namespace PixelSort
 			return bitmap;
 		}
 
+		// BubbleSort the pixels in the bitmap by luminance
+		// TODO: BubbleSort is very inefficient, add other ways to sort
 		public WriteableBitmap BubbleSortLuminance(WriteableBitmap bitmap)
 		{
-			for (var row = 0; row < bitmap.PixelWidth; row++)
+			int stride = bitmap.PixelWidth * 4;
+			byte[] data = new byte[stride * bitmap.PixelHeight];
+			bitmap.CopyPixels(data, stride, 0);
+
+			for (var row = 0; row < bitmap.PixelHeight; row++)
 			{
-				for (var i = 0; i < bitmap.PixelHeight - 1; i++)
+				for (var i = 0; i < bitmap.PixelWidth - 1; i++)
 				{
-					for (var col = 0; col < bitmap.PixelHeight - 1; col++)
+					for (var col = 0; col < bitmap.PixelWidth - 1; col++)
 					{
-						// Get pixels
-						var pixel = bitmap.GetPixel(row, col);
-						var nextPixel = bitmap.GetPixel(row, col + 1);
+						var index = col * stride + row * 4;
+
+						// Current Pixel
+						var currentBlue = data[index];
+						var currentGreen = data[index + 1];
+						var currentRed = data[index + 2];
+						var currentAlpha = data[index + 3];
+
+						// Next Pixel
+						var nextBlue = data[index + stride];
+						var nextGreen = data[index + stride + 1];
+						var nextRed = data[index + stride + 2];
+						var nextAlpha = data[index + stride + 3];
 
 						// Calculate luminance
-						var pixelLuminance = (0.2126 * pixel.R + 0.7152 * pixel.G + 0.0722 * pixel.B);
-						var nextPixelLuminance = (0.2126 * nextPixel.R + 0.7152 * nextPixel.G + 0.0722 * nextPixel.B);
+						var currentLuminance = (int)Math.Sqrt(
+							currentRed * currentRed * .241 +
+							currentGreen * currentGreen * .691 +
+							currentBlue * currentBlue * .068);
+
+						var nextLuminance = (int)Math.Sqrt(
+							nextRed * nextRed * .241 +
+							nextGreen * nextGreen * .691 +
+							nextBlue * nextBlue * .068);
 
 						// Swap pixels if luminance of the next pixel is lower
-						if (pixelLuminance > nextPixelLuminance)
+						if (currentLuminance > nextLuminance)
 						{
-							bitmap.SetPixel(row, col, nextPixel.A, nextPixel.R, nextPixel.G, nextPixel.B);
-							bitmap.SetPixel(row, col + 1, pixel.A, pixel.R, pixel.G, pixel.B);
+							data[index] = nextBlue;
+							data[index + 1] = nextGreen;
+							data[index + 2] = nextRed;
+							data[index + 3] = nextAlpha;
+
+							data[index + stride] = currentBlue;
+							data[index + stride + 1] = currentGreen;
+							data[index + stride + 2] = currentRed;
+							data[index + stride + 3] = currentAlpha;
 						}
 					}
 				}
 			}
+
+			// Specify the rectangle of pixels on the bitmap to be updated
+			var rect = new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight);
+
+			// Write the 1Dimensional Array of pixels to the bitmap
+			bitmap.WritePixels(rect, data, stride, 0);
+
 			return bitmap;
 		}
 	}

@@ -40,6 +40,7 @@ namespace PixelSort
 
 		private void BtnGenerate_Click(object sender, RoutedEventArgs e)
 		{
+			// TODO: Add a way to specify width and height in UI
 			_bitmap = _bitmapProcessor.GenerateBitmap(100, 100);
 			Image.Source = _bitmap;
 		}
