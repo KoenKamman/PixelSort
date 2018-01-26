@@ -12,16 +12,21 @@
             <ColumnDefinition Width="350*" />
             <ColumnDefinition Width="30*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
         <Image Margin="10,10,10,75" Name="Image" 
-               Stretch="Fill" Grid.Column="1" />
+               Stretch="Fill" Grid.Column="1" Grid.Row="0" />
         <Button Height="20" HorizontalAlignment="Left" 
                 Margin="10,0,0,40" Name="BtnLoad" VerticalAlignment="Bottom" 
-                Width="75" Grid.Column="1" Click="BtnLoad_Click">_Open Image</Button>
+                Width="75" Grid.Column="1" Grid.Row="0" Click="BtnLoad_Click">_Open Image</Button>
         <Button Height="20" HorizontalAlignment="Left" 
                 Margin="10,0,0,10" Name="BtnGenerate" VerticalAlignment="Bottom" 
-                Width="75" Grid.Column="1" Click="BtnGenerate_Click">_Generate</Button>
+                Width="75" Grid.Column="1" Grid.Row="0" Click="BtnGenerate_Click">_Generate</Button>
         <Button Height="20" HorizontalAlignment="Right" 
                 Margin="10,0,0,40" Name="BtnSort" VerticalAlignment="Bottom" 
-                Width="75" Grid.Column="1" Click="BtnSort_Click">_Sort</Button>
+                Width="75" Grid.Column="1" Grid.Row="0" Click="BtnSort_Click">_BubbleSort</Button>
+        <ProgressBar Name="BarProgress" Minimum="0" Maximum="100" Value="0" Grid.Row="1" Grid.Column="1"/>
     </Grid>
 </Window>

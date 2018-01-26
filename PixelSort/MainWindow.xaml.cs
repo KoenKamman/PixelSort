@@ -32,16 +32,25 @@ namespace PixelSort
 			}
 		}
 
-		private void BtnSort_Click(object sender, RoutedEventArgs e)
+		private async void BtnSort_Click(object sender, RoutedEventArgs e)
 		{
-			_bitmap = _bitmapProcessor.BubbleSortLuminance(_bitmap);
+			//_bitmap = await _bitmapProcessor.BubbleSortLuminance(_bitmap);
+			//Image.Source = _bitmap;
+
+			var progress = new Progress<float>(percent =>
+			{
+				BarProgress.Value = percent;
+			});
+
+			_bitmap = await _bitmapProcessor.BubbleSortLuminance(_bitmap, progress);
 			Image.Source = _bitmap;
+
 		}
 
 		private void BtnGenerate_Click(object sender, RoutedEventArgs e)
 		{
 			// TODO: Add a way to specify width and height in UI
-			_bitmap = _bitmapProcessor.GenerateBitmap(100, 100);
+			_bitmap = _bitmapProcessor.GenerateBitmap(400, 400);
 			Image.Source = _bitmap;
 		}
 	}
